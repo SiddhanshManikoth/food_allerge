@@ -1,0 +1,35 @@
+type Error = variant { NotFound : record { msg : text } };
+type FoodAllergyProfile = record {
+  id : nat64;
+  updated_at : opt nat64;
+  created_at : nat64;
+  user_id : nat64;
+  allergies : vec text;
+  product_recommendations : vec text;
+};
+type FoodAllergyUpdatePayload = record {
+  allergies : vec text;
+  product_recommendations : vec text;
+};
+type Result = variant { Ok : FoodAllergyProfile; Err : Error };
+service : {
+  add_food_allergy_profile : (FoodAllergyUpdatePayload) -> (
+      opt FoodAllergyProfile,
+    );
+  delete_food_allergy_profile : (nat64) -> (Result);
+  get_all_food_allergy_profiles : () -> (vec FoodAllergyProfile) query;
+  get_food_allergy_profile : (nat64) -> (Result) query;
+  get_food_allergy_profiles_by_allergy : (text) -> (
+      vec FoodAllergyProfile,
+    ) query;
+  get_food_allergy_profiles_by_product_recommendation : (text) -> (
+      vec FoodAllergyProfile,
+    ) query;
+  get_food_allergy_profiles_by_user_id : (nat64) -> (
+      vec FoodAllergyProfile,
+    ) query;
+  get_food_allergy_profiles_updated_after : (nat64) -> (
+      vec FoodAllergyProfile,
+    ) query;
+  update_food_allergy_profile : (nat64, FoodAllergyUpdatePayload) -> (Result);
+}
